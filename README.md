@@ -15,6 +15,37 @@
 
 </div>
 
+## 📚 Table of Contents
+
+- [The Problem](#the-problem)
+- [The Solution](#the-solution)
+  - [How It Solves Each Problem](#how-it-solves-each-problem)
+    - [Nullable Arguments](#1-nullable-arguments)
+    - [Structural Changes](#2-structural-changes)
+- [Installation](#installation)
+- [Usage](#usage)
+  - [Basic Example](#basic-example)
+  - [Deep Nesting](#deep-nesting)
+  - [Handling Structural Changes](#handling-structural-changes)
+  - [Advanced Patterns](#advanced-patterns)
+    - [Computed Values](#computed-values)
+    - [Conditional Access](#conditional-access)
+    - [Form Validation](#form-validation)
+    - [Pagination](#pagination)
+- [API Reference](#api-reference)
+  - [useTrackedSnapshot(proxy, getSnapshot)](#usetrackedsnapshotproxy-getsnapshot)
+- [How It Works](#how-it-works)
+- [Performance](#performance)
+  - [Subscription Count](#subscription-count)
+  - [Re-render Optimization](#re-render-optimization)
+  - [Memory Management](#memory-management)
+- [Comparison with useSnapshot](#comparison-with-usesnapshot)
+- [TypeScript](#typescript)
+  - [Generic State](#generic-state)
+- [Requirements](#requirements)
+- [License](#license)
+- [Contributing](#contributing)
+
 ## The Problem
 
 Valtio's `useSnapshot` hook has three significant limitations that make it difficult to work with in real-world applications:
@@ -56,7 +87,7 @@ function ThemeDisplay() {
 }
 ```
 
-### 3. Structural Changes Don't Notify Subtrees
+### 2. Structural Changes Don't Notify Subtrees
 
 When the structure of an object changes, components subscribing to nested properties don't re-render:
 
@@ -106,8 +137,6 @@ Selectors handle null/undefined gracefully with optional chaining:
 const userName = useTrackedSnapshot(state, (s) => s.user?.name);
 ```
 
-#### 2. Deep Nesting
-
 Extract exactly what you need without intermediate snapshots:
 
 ```tsx
@@ -118,7 +147,7 @@ const theme = useTrackedSnapshot(
 );
 ```
 
-#### 3. Structural Changes
+#### 2. Structural Changes
 
 Automatically re-subscribes when structure changes:
 
@@ -148,13 +177,19 @@ This ensures your subscriptions always match your current state structure.
 ```bash
 # npm
 npm install valtio-select valtio
+```
 
+```bash
 # yarn
 yarn add valtio-select valtio
+```
 
+```bash
 # pnpm
 pnpm add valtio-select valtio
+```
 
+```bash
 # bun
 bun add valtio-select valtio
 ```
