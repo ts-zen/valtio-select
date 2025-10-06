@@ -10,7 +10,7 @@
 [![Github CI](https://img.shields.io/github/actions/workflow/status/ts-zen/valtio-select/ci.yml?style=flat-square&branch=main)](https://github.com/ts-zen/valtio-select/actions/workflows/ci.yml)
 [![Codecov](https://img.shields.io/codecov/c/github/ts-zen/valtio-select?color=44cc11&logo=codecov&style=flat-square)](https://codecov.io/gh/ts-zen/valtio-select)
 [![code style: Prettier](https://img.shields.io/badge/code_style-Prettier-ff69b4.svg?style=flat-square&logo=prettier)](https://prettier.io/)
-[![npm](https://img.shields.io/npm/v/@tszen/valtio-select.svg?style=flat-square)](http://npm.im/@tszen/valtio-select)
+[![npm](https://img.shields.io/npm/v/valtio-select.svg?style=flat-square)](http://npm.im/valtio-select)
 [![Bundle Size](https://img.shields.io/bundlejs/size/valtio-select?style=flat-square&label=size&logo=esbuild&color=FFCF00)](https://bundlejs.com/?q=valtio-select)
 
 </div>
