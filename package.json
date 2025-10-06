@@ -1,6 +1,6 @@
 {
   "name": "valtio-select",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Fine-grained subscriptions to Valtio proxies with automatic re-tracking on structural changes",
   "type": "module",
   "exports": {
