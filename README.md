@@ -306,11 +306,16 @@ const state = proxy({
 });
 
 function TodoStats() {
-  const stats = useTrackedSnapshot(state, (s) => ({
-    total: s.todos.length,
-    completed: s.todos.filter((t) => t.completed).length,
-    active: s.todos.filter((t) => !t.completed).length,
-  }));
+  const todos = useTrackedSnapshot(state, (s) => s.todos);
+
+  const stats = useMemo(
+    () => ({
+      total: todos.length,
+      completed: todos.filter((t) => t.completed).length,
+      active: todos.filter((t) => !t.completed).length,
+    }),
+    [todos]
+  );
 
   return (
     <div>
@@ -338,60 +343,6 @@ function ViewSettings() {
 
   // TypeScript knows: settings is { columns: number } | { density: string }
   return <div>{JSON.stringify(settings)}</div>;
-}
-```
-
-#### Form Validation
-
-```tsx
-const state = proxy({
-  form: {
-    email: "",
-    password: "",
-    confirmPassword: "",
-  },
-});
-
-function FormValidation() {
-  const isValid = useTrackedSnapshot(state, (s) => {
-    const emailValid = s.form.email.includes("@");
-    const passwordValid = s.form.password.length >= 8;
-    const passwordsMatch = s.form.password === s.form.confirmPassword;
-
-    return emailValid && passwordValid && passwordsMatch;
-  });
-
-  return <button disabled={!isValid}>Submit</button>;
-}
-```
-
-#### Pagination
-
-```tsx
-const state = proxy({
-  items: Array.from({ length: 100 }, (_, i) => ({ id: i, name: `Item ${i}` })),
-  page: 1,
-  pageSize: 10,
-});
-
-function PaginatedList() {
-  const pageItems = useTrackedSnapshot(state, (s) => {
-    const start = (s.page - 1) * s.pageSize;
-    const end = start + s.pageSize;
-    return s.items.slice(start, end);
-  });
-
-  return (
-    <div>
-      <ul>
-        {pageItems.map((item) => (
-          <li key={item.id}>{item.name}</li>
-        ))}
-      </ul>
-      <button onClick={() => state.page--}>Previous</button>
-      <button onClick={() => state.page++}>Next</button>
-    </div>
-  );
 }
 ```
 
@@ -657,29 +608,6 @@ const stats = useTrackedSnapshot(state, (s) => ({
   total: s.items.length,
   average: s.items.reduce((a, b) => a + b, 0) / s.items.length,
 }));
-```
-
-### Generic State
-
-```tsx
-interface Store<T> {
-  data: T | null;
-  loading: boolean;
-  error: Error | null;
-}
-
-function useStoreData<T>(store: Store<T>) {
-  return useTrackedSnapshot(store, (s) => s.data);
-}
-
-const userStore = proxy<Store<User>>({
-  data: null,
-  loading: false,
-  error: null,
-});
-
-// Type: User | null
-const user = useStoreData(userStore);
 ```
 
 ## Requirements
