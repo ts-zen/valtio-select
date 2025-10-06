@@ -34,6 +34,7 @@
     - [Pagination](#pagination)
 - [API Reference](#api-reference)
   - [useTrackedSnapshot(proxy, getSnapshot)](#usetrackedsnapshotproxy-getsnapshot)
+  - [subscribeTracked(proxy, getter, callback)](#subscribetrackedproxy-getter-callback)
 - [How It Works](#how-it-works)
 - [Performance](#performance)
   - [Subscription Count](#subscription-count)
@@ -453,6 +454,60 @@ Creates a fine-grained subscription to a Valtio proxy using a selector function.
   // When user is replaced, component re-subscribes to new user
   state.user = { name: "Jane" };
   ```
+
+### subscribeTracked(proxy, getter, callback)
+
+The core, non-React subscription function that powers `useTrackedSnapshot`. It provides the same fine-grained, auto-re-tracking subscription logic for use in any JavaScript/TypeScript environment.
+
+This is useful for integrating tracked state with non-React libraries, vanilla TypeScript logic, or for building your own custom hooks and abstractions.
+
+#### Parameters
+
+- **proxy**: `T extends object`
+
+  - The Valtio proxy object to track.
+
+- **getter**: `(proxy: T) => unknown`
+
+  - A function that accesses properties on the proxy. The properties accessed within this function will be tracked.
+
+- **callback**: `() => void`
+  - The function to be called whenever a tracked property changes.
+
+#### Returns
+
+- **unsubscribe**: `() => void`
+  - A function that cleans up and removes the subscription.
+
+#### Example
+
+```ts
+import { proxy } from "valtio";
+import { subscribeTracked } from "valtio-select";
+
+const state = proxy({ count: 0, other: "data" });
+
+console.log("Subscribing to state.count");
+
+const unsubscribe = subscribeTracked(
+  state,
+  (s) => s.count, // The getter tracks this property
+  () => console.log("Count changed!", state.count)
+);
+
+// This will trigger the callback
+state.count++; // Logs: Count changed! 1
+
+// This will NOT trigger the callback because 'other' is not tracked
+state.other = "new data";
+
+// Clean up the subscription
+unsubscribe();
+console.log("Unsubscribed.");
+
+// This will no longer trigger the callback
+state.count++;
+```
 
 ## How It Works
 
