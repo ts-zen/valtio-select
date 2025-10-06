@@ -19,7 +19,7 @@ jobs:
           bun-version: latest
 
       - run: bun install
-      - run: bun run lint
+      - run: bun run check
       - run: bun run build
       - run: bun run test:types
       - run: bun run test:ts:coverage
