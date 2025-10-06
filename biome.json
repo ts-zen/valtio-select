@@ -1,0 +1,22 @@
+{
+  "$schema": "https://biomejs.dev/schemas/2.2.5/schema.json",
+  "assist": {
+    "actions": {
+      "source": {
+        "organizeImports": "on"
+      }
+    },
+    "enabled": true
+  },
+  "formatter": {
+    "indentStyle": "space",
+    "enabled": true
+  },
+  "linter": {
+    "includes": ["**", "!**/*.test-d.ts"],
+    "enabled": true,
+    "rules": {
+      "recommended": true
+    }
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "declaration": true,
+    "outDir": "./dist",
+    "skipLibCheck": true,
+    "sourceMap": true,
+    "target": "esnext",
+    "moduleResolution": "bundler"
+  },
+  "extends": "./tsconfig.json",
+  "include": ["src/index.ts"]
+}
