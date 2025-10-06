@@ -1,6 +1,7 @@
-import { useCallback, useMemo, useSyncExternalStore } from "react";
-import { snapshot } from "valtio";
+import { useCallback, useSyncExternalStore } from "react";
+import { useSnapshot } from "valtio";
 import { subscribeTracked } from "./subscribeTracked";
+import { isValtioProxy, noopProxy } from "./utils";
 
 /**
  * A React hook that provides fine-grained subscriptions to Valtio proxies.
@@ -42,14 +43,11 @@ function useTrackedSnapshot<T extends object, R>(
     () => getSnapshot(proxy),
   );
 
-  // Return snapshot of the value to ensure immutability
-  return useMemo<R>(
-    () =>
-      typeof value === "object" && value !== null
-        ? (snapshot(value) as R)
-        : value,
-    [value],
-  );
+  // Compute the snapshot if necessary.
+  const snapshot = useSnapshot(isValtioProxy(value) ? value : noopProxy) as R;
+
+  // Return the snapshot of the actual plain value.
+  return isValtioProxy(value) ? snapshot : value;
 }
 
 export { useTrackedSnapshot };

@@ -784,7 +784,7 @@ describe("subscribeTracked - Edge Cases", () => {
  * - Multiple concurrent subscriptions
  * - Proper cleanup under stress
  */
-describe("subscribeTracked - STRESS TEST", () => {
+describe("subscribeTracked - stress test", () => {
   test("should handle high-frequency updates with structural changes", async () => {
     // Create complex nested state
     const state = proxy({
