@@ -43,6 +43,24 @@ function useTrackedSnapshot<T extends object, R>(
     () => getSnapshot(proxy),
   );
 
+  if (process.env.NODE_ENV !== "production") {
+    // "getSnapshot" should be able to recognize that the snapshot has not
+    // changed. The instability of the snapshot will likely cause an infinite
+    // render loop.
+    if (!Object.is(getSnapshot(proxy), getSnapshot(proxy))) {
+      console.warn(
+        '"getSnapshot" must be a pure function, and if called multiple times ' +
+          "in a row, it must return the same snapshot. This is necessary to " +
+          "avoid an infinite render loop:\n\n" +
+          "// This is problematic:\n" +
+          'const snapshot: Value = useTrackedSnapshot(proxy, (p) => p.prop || ["defaultUnstableValue"]);\n\n' +
+          "// This will correctly maintain stability:\n" +
+          "const maybeSnapshot: Value | undefined = useTrackedSnapshot(proxy, (p) => p.prop]);\n" +
+          'const snapshot = useMemo(() => maybeSnapshot ?? ["defaultUnstableValue"], [maybeSnapshot]);\n',
+      );
+    }
+  }
+
   // Compute the snapshot if necessary.
   const snapshot = useSnapshot(isValtioProxy(value) ? value : noopProxy) as R;
 
